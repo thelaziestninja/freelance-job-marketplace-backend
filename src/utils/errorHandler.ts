@@ -1,4 +1,4 @@
-import { IAppError } from "./errorTypes";
+import { IAppError } from "../types";
 
 export const handleError = (error: IAppError ): void => {
     console.error(`Error (${error.errorCode ?? 'unknown'}): ${error.message}`);

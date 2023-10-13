@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { handleError } from "../utils/errorHandler";
-import { IAppError } from "../utils/errorTypes";
+import { IAppError } from "../types/error";
 
 dotenv.config();
 
