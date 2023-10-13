@@ -1,9 +1,8 @@
 import bcrypt from "bcryptjs";
-import { UserInput } from "../types";
 import { UserM } from "../models/user";
+import { LoginInput, UserInput } from "../types";
 
-
-export async function registerUser(input: UserInput) {
+export const registerUser = async (input: UserInput) => {
   try {
     const hashed_password = await bcrypt.hash(input.password, 10);
     const newUser = new UserM({
@@ -15,4 +14,23 @@ export async function registerUser(input: UserInput) {
   } catch (e: any) {
     throw new Error(e);
   }
-}
+};
+
+export const loginUser = async (input: LoginInput) => {
+  try {
+    const user = await UserM.findOne({ username: input.username });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const isPasswordValid = await bcrypt.compare(
+      input.password,
+      user.hashed_password
+    );
+    if (!isPasswordValid) {
+      throw new Error("Invalid password");
+    }
+    return user;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};

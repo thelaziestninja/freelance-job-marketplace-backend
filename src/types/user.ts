@@ -15,4 +15,9 @@ export interface UserInput {
     user_type?: UserType; // I even might not request from the userInput to tell me what type he is
 }
 
+export interface LoginInput {
+  username: string;
+  password: string;
+}
+
 export type UserType = "freelancer" | "client";
