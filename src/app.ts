@@ -1,12 +1,11 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import connectDB from './config/dbConfig';
 
 // Import your routes
-// import userRoutes from './routes/userRoutes';
+import userRoutes from "./routes/userRoutes"
 // import profileRoutes from './routes/profileRoutes';
 // import jobRoutes from './routes/jobRoutes';
 // import applicationRoutes from './routes/applicationRoutes';
@@ -25,7 +24,7 @@ app.use(cors());  // Enable CORS for all routes
 app.use(helmet());  // Adds some security best practices
 
 // Use routes
-// app.use('/api/users', userRoutes);
+app.use("/user", userRoutes);
 // app.use('/api/profiles', profileRoutes);
 // app.use('/api/jobs', jobRoutes);
 // app.use('/api/applications', applicationRoutes);

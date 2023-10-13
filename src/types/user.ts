@@ -8,7 +8,11 @@ export interface IUser {
   user_type: UserType;
 }
 
-// a Document in Mongoose is an instance of a model.
-export interface UserDocument extends IUser, Document {}
+export interface UserInput {
+    username: string;
+    password: string;  // Note: not hashed
+    email: string;
+    user_type?: UserType; // I even might not request from the userInput to tell me what type he is
+}
 
 export type UserType = "freelancer" | "client";

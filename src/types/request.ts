@@ -1,4 +1,5 @@
 import * as core from 'express-serve-static-core'
+import { IUser } from './user';
 
 // if separated into multiple services, separate to multiple files and on a more generic location
 
@@ -7,6 +8,7 @@ export type Request<ReqBody> = core.Request<core.ParamsDictionary, any, ReqBody>
 export interface BaseResponse {
   message?: string
   error?: string
+  user?: IUser
 }
 
 export type Response<ResBody> = core.Response<ResBody>
