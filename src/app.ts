@@ -6,7 +6,7 @@ import connectDB from "./config/dbConfig";
 
 // Import your routes
 import userRoutes from "./routes/userRoutes";
-// import profileRoutes from './routes/profileRoutes';
+import profileRoutes from "./routes/profileRoutes";
 // import jobRoutes from './routes/jobRoutes';
 // import applicationRoutes from './routes/applicationRoutes';
 // import reviewRoutes from './routes/reviewRoutes';
@@ -25,7 +25,7 @@ app.use(helmet()); // Adds some security best practices
 
 // Use routes
 app.use("/user", userRoutes);
-// app.use('/api/profiles', profileRoutes);
+app.use("/", profileRoutes);
 // app.use('/api/jobs', jobRoutes);
 // app.use('/api/applications', applicationRoutes);
 // app.use('/api/reviews', reviewRoutes);
