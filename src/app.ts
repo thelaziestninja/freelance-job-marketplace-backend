@@ -1,11 +1,11 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import helmet from 'helmet';
-import connectDB from './config/dbConfig';
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import helmet from "helmet";
+import connectDB from "./config/dbConfig";
 
 // Import your routes
-import userRoutes from "./routes/userRoutes"
+import userRoutes from "./routes/userRoutes";
 // import profileRoutes from './routes/profileRoutes';
 // import jobRoutes from './routes/jobRoutes';
 // import applicationRoutes from './routes/applicationRoutes';
@@ -18,10 +18,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(express.json());  // for parsing application/json
-app.use(express.urlencoded({ extended: true }));  // for parsing application/x-www-form-urlencoded
-app.use(cors());  // Enable CORS for all routes
-app.use(helmet());  // Adds some security best practices
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(cors()); // Enable CORS for all routes
+app.use(helmet()); // Adds some security best practices
 
 // Use routes
 app.use("/user", userRoutes);
@@ -36,5 +36,5 @@ connectDB();
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

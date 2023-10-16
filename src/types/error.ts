@@ -1,5 +1,4 @@
 export interface IAppError {
-    message: string;
-    errorCode?: number;
+  message: string;
+  errorCode?: number;
 }
-

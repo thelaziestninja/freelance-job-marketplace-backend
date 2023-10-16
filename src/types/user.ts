@@ -9,10 +9,10 @@ export interface IUser {
 }
 
 export interface UserInput {
-    username: string;
-    password: string;  // Note: not hashed
-    email: string;
-    user_type?: UserType; // I even might not request from the userInput to tell me what type he is
+  username: string;
+  password: string; // Note: not hashed
+  email: string;
+  user_type?: UserType; // I even might not request from the userInput to tell me what type he is
 }
 
 export interface LoginInput {

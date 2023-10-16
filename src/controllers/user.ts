@@ -9,12 +9,6 @@ export const registerHandler = async (
 ): Promise<void> => {
   try {
     const newUser = await registerUser(req.body);
-    const token = jwt.sign(
-      { username: newUser.username, userId: newUser._id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1d" } // expires in 1 day
-    );
-
     res
       .status(201)
       .json({ message: "User registered successfully", user: newUser });
@@ -27,15 +21,18 @@ interface LoginRequest extends Request {
   body: LoginInput;
 }
 
-export const loginHandler = async (req: LoginRequest, res: Response<BaseResponse>): Promise<void> => {
+export const loginHandler = async (
+  req: LoginRequest,
+  res: Response<BaseResponse>
+): Promise<void> => {
   try {
     const user = await loginUser(req.body);
     const token = jwt.sign(
       { username: user.username, userId: user._id },
       process.env.JWT_SECRET as string,
-      { expiresIn: '1d' }
+      { expiresIn: "1d" }
     );
-    res.status(200).json({ message: 'Login successful', token });
+    res.status(200).json({ message: "Login successful", token });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
