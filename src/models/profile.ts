@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
 const profileSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+    unique: true, // Ensure each user can only have one profile
+  },
   skills: {
     type: [String],
     required: true,
