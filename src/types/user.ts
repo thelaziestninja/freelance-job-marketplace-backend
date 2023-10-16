@@ -1,5 +1,3 @@
-import { Document } from "mongoose";
-
 //an interface is a way to define a contract for a class without implementing any behavior.
 export interface IUser {
   username: string;
