@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { handleError } from "../utils/errorHandler";
-import { IAppError } from "../types/error";
+import { AppError, handleError } from "../utils/errorHandler";
 
 dotenv.config();
 
-const isIAppError = (error: any): error is IAppError => {
-  return error && typeof error.message === "string";
+const isAppError = (error: any): error is AppError => {
+  return error instanceof AppError;
 };
 
 const connectDB = async () => {
@@ -19,8 +18,8 @@ const connectDB = async () => {
     await mongoose.connect(process.env.MONGODB_URI!); // process.env.MONGODB_URI! non-null and non-undefined
     console.log("Connected to MongoDB");
   } catch (error) {
-    if (isIAppError(error)) {
-      handleError(error);
+    if (isAppError(error)) {
+      handleError(error, null);
     } else {
       console.error("An unknown error occurred:", error);
     }

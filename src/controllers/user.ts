@@ -37,3 +37,19 @@ export const loginHandler = async (
     res.status(500).json({ error: error.message });
   }
 };
+
+// export const logoutHandler = async (
+//   req: Request,
+//   res: Response<BaseResponse>
+// ): Promise<void> => {
+//   try {
+//     const authHeader = req.headers.authorization;
+//     if (authHeader) {
+//       const token = authHeader.split(" ")[1]; // Bearer <token>
+//       tokenBlacklist.add(token); // Add the token to the blacklist
+//     }
+//     res.status(200).json({ message: "Logout successful" });
+//   } catch (error: any) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
