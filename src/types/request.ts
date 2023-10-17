@@ -1,7 +1,7 @@
-import * as core from "express-serve-static-core";
+import { IJob } from "./job";
 import { IUser } from "./user";
 import { IProfile } from "./profile";
-import { IJob } from "./job";
+import * as core from "express-serve-static-core";
 
 // if separated into multiple services, separate to multiple files and on a more generic location
 
