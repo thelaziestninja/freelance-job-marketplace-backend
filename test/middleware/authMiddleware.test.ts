@@ -59,8 +59,7 @@ describe("JWT Expiration Test", () => {
       language: ["English", "Spanish"],
     };
     // Wait for the token to expire
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Assume a 5 second expiration
-
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Assume a 1 second expiration also change in loginHandler expiration to 1s
     const response = await request(app)
       .post("/profiles")
       .set("Authorization", `Bearer ${jwtToken}`)

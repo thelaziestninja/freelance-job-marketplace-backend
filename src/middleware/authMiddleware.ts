@@ -42,8 +42,8 @@ export const authenticateJWT = (
       next(new AppError("Unauthorized", 401, 1000));
     }
   } catch (error) {
-    console.error("Error:", error);
-    console.error("Request headers:", req.headers);
+    // console.error("Error:", error);
+    // console.error("Request headers:", req.headers);
     if (isError(error)) {
       const appError = new AppError(error.message, 500, 2000);
       handleError(appError, res);

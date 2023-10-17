@@ -42,7 +42,7 @@ export const loginHandler = async (
     const token = jwt.sign(
       { username: user.username, userId: user._id },
       process.env.JWT_SECRET as string,
-      { expiresIn: "1s" }
+      { expiresIn: "1d" }
     );
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
