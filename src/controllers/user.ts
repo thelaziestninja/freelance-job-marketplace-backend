@@ -1,14 +1,14 @@
-import jwt from "jsonwebtoken";
-import { Request, Response } from "express";
-import { loginUser, registerUser } from "../services/user";
-import { BaseResponse, LoginInput, UserInput } from "../types";
 import {
   AppError,
   handleError,
   handleUnknownError,
   isValidationError,
 } from "../utils/errorHandler";
+import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
+import { loginUser, registerUser } from "../services/user";
 import { addTokenToBlacklist } from "../utils/tokenBlackList";
+import { BaseResponse, LoginInput, UserInput } from "../types";
 
 export const registerHandler = async (
   req: Request<UserInput>,
@@ -42,7 +42,7 @@ export const loginHandler = async (
     const token = jwt.sign(
       { username: user.username, userId: user._id },
       process.env.JWT_SECRET as string,
-      { expiresIn: "1d" }
+      { expiresIn: "1s" }
     );
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {

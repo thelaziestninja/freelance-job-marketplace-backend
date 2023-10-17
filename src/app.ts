@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
@@ -29,6 +29,12 @@ app.use("/", profileRoutes);
 // app.use('/api/jobs', jobRoutes);
 // app.use('/api/applications', applicationRoutes);
 // app.use('/api/reviews', reviewRoutes);
+
+// Global error-handling middleware
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({ message: err.message });
+});
 
 // Connect to MongoDB
 connectDB();

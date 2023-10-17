@@ -22,17 +22,17 @@ beforeAll(async () => {
       user_type: "freelancer",
     });
 
-  console.log("registerResponse.status", registerResponse.status);
-  console.log("registerResponse.body", registerResponse.body);
+  // console.log("registerResponse.status", registerResponse.status);
+  // console.log("registerResponse.body", registerResponse.body);
 
   const response = await request(app)
     .post("/user/login")
     .send({ username: uniqueUsername, password: "test123" });
 
-  console.log("response.body", response.body);
+  // console.log("response.body", response.body);
   jwtToken = response.body.token;
-  console.log("jwtToken", jwtToken);
-  console.log("response.status", response.status);
+  // console.log("jwtToken", jwtToken);
+  // console.log("response.status", response.status);
 });
 
 describe("JWT Expiration Test", () => {
@@ -47,7 +47,7 @@ describe("JWT Expiration Test", () => {
       .post("/profiles")
       .set("Authorization", `Bearer ${jwtToken}`)
       .send(profileData);
-    console.log("response.body:", response.body);
+    // console.log("response.body:", response.body);
     expect(response.statusCode).toBe(201);
   });
 
@@ -59,14 +59,15 @@ describe("JWT Expiration Test", () => {
       language: ["English", "Spanish"],
     };
     // Wait for the token to expire
-    await new Promise((resolve) => setTimeout(resolve, 86400)); // Assume a 5 second expiration
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Assume a 5 second expiration
 
     const response = await request(app)
       .post("/profiles")
       .set("Authorization", `Bearer ${jwtToken}`)
       .send(profileData);
+    // console.log("response.body:", response.body);
     expect(response.statusCode).toBe(401); // Unauthorized due to token expiration
-  }, 10000); // Set a timeout of 10 seconds for this test
+  }, 5000); // Set a timeout of 10 seconds for this test
 
   afterAll(async () => {
     await new Promise((resolve) => server.close(resolve));
