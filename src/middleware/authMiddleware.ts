@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { AppError, handleError } from "../utils/errorHandler";
 import { Request, Response, NextFunction } from "express";
 import { isTokenBlacklisted } from "../utils/tokenBlackList";
+import { AppError, handleError } from "../utils/errorHandler";
 
 function isError(error: unknown): error is Error {
   return error instanceof Error;
@@ -19,19 +19,21 @@ export const authenticateJWT = (
       const token = authHeader.split(" ")[1]; // Bearer <token>
       isTokenBlacklisted(token).then((isBlacklisted) => {
         if (isBlacklisted) {
-          throw new AppError("Token has been invalidated", 401, 1002);
+          next(new AppError("Token has been invalidated", 401, 1002));
+          return;
         }
         jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
           if (err) {
-            throw new AppError("Forbidden", 403, 1001);
+            next(new AppError("Forbidden", 403, 1001));
+            return;
           }
+          // @ts-expect-error ts-migrate(2339) FIXME: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs>'.
+          req.user = user;
+          next();
         });
-        // @ts-expect-error ts-migrate(2339) FIXME: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs>'.
-        req.user = user;
-        next();
       });
     } else {
-      throw new AppError("Unauthorized", 401, 1000);
+      next(new AppError("Unauthorized", 401, 1000));
     }
   } catch (error) {
     if (isError(error)) {
