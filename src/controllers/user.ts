@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { loginUser, registerUser } from "../services/user";
 import { BaseResponse, LoginInput, UserInput } from "../types";
 import { AppError, ValidationError, handleError } from "../utils/errorHandler";
-import { tokenBlacklist } from "../utils/tokenBlackList";
+import { addTokenToBlacklist } from "../utils/tokenBlackList";
 
 const isValidationError = (error: any): error is ValidationError => {
   return error && error.name === "ValidationError";
@@ -67,7 +67,7 @@ export const logoutHandler = async (
     const authHeader = req.headers.authorization;
     if (authHeader) {
       const token = authHeader.split(" ")[1]; // Bearer <token>
-      tokenBlacklist.add(token); // Add the token to the blacklist
+      await addTokenToBlacklist(token);
     }
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
