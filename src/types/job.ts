@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export interface IJob {
-  client_id: mongoose.Types.ObjectId;
+  client_id: mongoose.Types.ObjectId | string;
   title: string;
   description: string;
   budget: number;
@@ -9,8 +9,8 @@ export interface IJob {
 }
 
 export interface JobInput {
-  title?: string;
-  description?: string;
-  budget?: number;
-  deadline?: Date;
+  title: string;
+  description: string;
+  budget: number;
+  deadline: Date;
 }

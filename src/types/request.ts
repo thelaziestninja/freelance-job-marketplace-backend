@@ -24,7 +24,7 @@ export interface BaseResponse {
   user?: IUser;
   profile?: IProfile;
   profiles?: IProfile[];
-  // job?: IJob[];
+  job?: IJob;
   jobs?: IJob[];
 }
 
