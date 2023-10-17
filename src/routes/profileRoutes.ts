@@ -21,4 +21,5 @@ router.post(
 router.get("/profiles", authenticateJWT, getAllProfilesHandler);
 router.get("/profile", authenticateJWT, ensureFreelancer, getProfileHandler);
 router.put("/profile", authenticateJWT, ensureFreelancer, updateProfileHandler);
+
 export default router;

@@ -1,6 +1,6 @@
-import { ProfileM } from "../models/profile";
 import { UserM } from "../models/user";
 import { ProfileInput } from "../types";
+import { ProfileM } from "../models/profile";
 
 export const createProfile = async (
   userId: string,
