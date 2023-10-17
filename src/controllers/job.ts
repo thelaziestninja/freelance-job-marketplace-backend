@@ -1,6 +1,7 @@
 import { Response } from "express";
 import {
   createJob,
+  deleteJob,
   getAllJobs,
   getJobsByClientId,
   updateJob,
@@ -99,6 +100,35 @@ export const updateJobHandler = async (
     }
 
     res.status(200).json({ job: updatedJob });
+  } catch (error) {
+    handleUnknownError(error, res);
+  }
+};
+
+export const deleteJobHandler = async (
+  req: Request<{ id: string }>,
+  res: Response<BaseResponse>
+): Promise<void> => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      handleError(new AppError("Unauthorized", 401, 401), res);
+      return;
+    }
+
+    const jobId = req.params.id;
+
+    const result = await deleteJob(userId, jobId);
+
+    if (!result) {
+      handleError(
+        new AppError("Deletion failed or not authorized", 403, 403),
+        res
+      );
+      return;
+    }
+
+    res.status(200).json({ message: "Job deleted successfully" });
   } catch (error) {
     handleUnknownError(error, res);
   }

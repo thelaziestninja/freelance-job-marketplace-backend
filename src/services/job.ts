@@ -28,3 +28,7 @@ export const updateJob = async (
     }
   );
 };
+
+export const deleteJob = async (clientId: string, jobId: string) => {
+  return JobM.findOneAndDelete({ _id: jobId, client_id: clientId });
+};
