@@ -6,8 +6,7 @@ import {
 } from "../utils/errorHandler";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { loginUser, registerUser } from "../services/user";
-import { addTokenToBlacklist } from "../utils/tokenBlackList";
+import { blacklistToken, loginUser, registerUser } from "../services/user";
 import { BaseResponse, LoginInput, UserInput } from "../types";
 
 export const registerHandler = async (
@@ -40,7 +39,7 @@ export const loginHandler = async (
   try {
     const user = await loginUser(req.body);
     const token = jwt.sign(
-      { username: user.username, userId: user._id },
+      { username: user.username, userId: user._id, userType: user.user_type },
       process.env.JWT_SECRET as string,
       { expiresIn: "1d" }
     );
@@ -63,7 +62,7 @@ export const logoutHandler = async (
     const authHeader = req.headers.authorization;
     if (authHeader) {
       const token = authHeader.split(" ")[1]; // Bearer <token>
-      await addTokenToBlacklist(token);
+      await blacklistToken(token);
     }
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {

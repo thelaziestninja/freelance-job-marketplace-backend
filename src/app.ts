@@ -36,6 +36,17 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(statusCode).json({ message: err.message });
 });
 
+// in order not to crash after errors
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  // Send error to global error handler or logging system
+});
+
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception:", error);
+  // Send error to global error handler or logging system
+});
+
 // Connect to MongoDB
 connectDB();
 

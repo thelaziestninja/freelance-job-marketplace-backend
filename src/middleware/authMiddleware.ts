@@ -1,11 +1,7 @@
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { isTokenBlacklisted } from "../utils/tokenBlackList";
-import { AppError, handleError } from "../utils/errorHandler";
-
-function isError(error: unknown): error is Error {
-  return error instanceof Error;
-}
+import { AppError, handleError, isError } from "../utils/errorHandler";
 
 export const authenticateJWT = (
   req: Request,
@@ -52,4 +48,30 @@ export const authenticateJWT = (
       handleError(unknownError, res);
     }
   }
+};
+
+export const ensureFreelancer = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // @ts-expect-error ts-migrate(2339) FIXME: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs>'.
+  if (req.user?.userType !== "freelancer") {
+    return res
+      .status(403)
+      .json({ error: "Access forbidden for non-freelancers" });
+  }
+  next();
+};
+
+export const ensureClient = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // @ts-expect-error ts-migrate(2339) FIXME: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs>'.
+  if (req.user?.userType !== "client") {
+    return res.status(403).json({ error: "Access forbidden for non-clients" });
+  }
+  next();
 };

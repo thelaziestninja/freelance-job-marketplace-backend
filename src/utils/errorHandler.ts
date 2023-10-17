@@ -14,7 +14,16 @@ const isValidationError = (error: any): error is ValidationError => {
   return error && error.name === "ValidationError";
 };
 
+const isError = (error: unknown): error is Error => {
+  return error instanceof Error;
+};
+
 const handleUnknownError = (error: any, res: Response<BaseResponse>) => {
+  if (error instanceof Error) {
+    handleError(new AppError(error.message, 500, 500), res);
+  } else {
+    handleError(new AppError("An unknown error occurred", 500, 500), res);
+  }
   const e = error as Error;
   handleError(new AppError(e.message || "Unknown error", 500, 500), res);
   console.error(`Error (${error.errorCode ?? "unknown"}): ${error.message}`);
@@ -39,9 +48,10 @@ class ValidationError extends Error {
   }
 }
 export {
+  isError,
   AppError,
-  ValidationError,
   handleError,
+  ValidationError,
   isValidationError,
   handleUnknownError,
 };
