@@ -4,15 +4,14 @@ import {
   handleUnknownError,
   isValidationError,
 } from "../utils/errorHandler";
-import { Response } from "express";
-import { Request } from "../types";
 import {
   createProfile,
   getAllProfiles,
   getProfileByUserId,
   updateProfileByUserId,
 } from "../services/profile";
-import { BaseResponse, ProfileInput } from "../types";
+import { Response } from "express";
+import { Request, BaseResponse, ProfileInput } from "../types";
 
 export const createProfileHandler = async (
   req: Request<ProfileInput>,

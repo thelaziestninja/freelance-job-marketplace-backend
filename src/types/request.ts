@@ -1,6 +1,7 @@
 import * as core from "express-serve-static-core";
 import { IUser } from "./user";
 import { IProfile } from "./profile";
+import { IJob } from "./job";
 
 // if separated into multiple services, separate to multiple files and on a more generic location
 
@@ -23,6 +24,8 @@ export interface BaseResponse {
   user?: IUser;
   profile?: IProfile;
   profiles?: IProfile[];
+  // job?: IJob[];
+  jobs?: IJob[];
 }
 
 export type Response<ResBody> = core.Response<ResBody>;
