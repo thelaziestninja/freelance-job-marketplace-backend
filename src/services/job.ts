@@ -14,3 +14,17 @@ export const createJob = async (jobData: IJob) => {
   await job.save();
   return job.toObject();
 };
+
+export const updateJob = async (
+  clientId: string,
+  jobId: string,
+  updatedData: Pick<IJob, "title" | "description" | "budget" | "deadline">
+) => {
+  return JobM.findOneAndUpdate(
+    { _id: jobId, client_id: clientId },
+    updatedData,
+    {
+      new: true,
+    }
+  );
+};

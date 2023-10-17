@@ -17,6 +17,8 @@ dotenv.config();
 // Create Express app
 const app = express();
 
+app.use(express.json());
+
 // Middleware
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded

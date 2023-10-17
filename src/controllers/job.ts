@@ -1,5 +1,10 @@
 import { Response } from "express";
-import { createJob, getAllJobs, getJobsByClientId } from "../services/job";
+import {
+  createJob,
+  getAllJobs,
+  getJobsByClientId,
+  updateJob,
+} from "../services/job";
 import { Request, BaseResponse, IJob, JobInput } from "../types";
 import {
   AppError,
@@ -58,6 +63,42 @@ export const createJobHandler = async (
 
     const job = await createJob(fullJobData);
     res.status(201).json({ jobs: [job] });
+  } catch (error) {
+    handleUnknownError(error, res);
+  }
+};
+
+export const updateJobHandler = async (
+  req: Request<
+    { id: string },
+    Pick<IJob, "title" | "description" | "budget" | "deadline">
+  >,
+  res: Response<BaseResponse>
+): Promise<void> => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      handleError(new AppError("Unauthorized", 401, 401), res);
+      return;
+    }
+
+    const jobId = req.params.id; // This is the job ID you want to update
+    const updatedJobData: Pick<
+      IJob,
+      "title" | "description" | "budget" | "deadline"
+    > = req.body; // This is the update data
+
+    const updatedJob = await updateJob(userId, jobId, updatedJobData);
+
+    if (!updatedJob) {
+      handleError(
+        new AppError("Update failed or not authorized", 403, 403),
+        res
+      );
+      return;
+    }
+
+    res.status(200).json({ job: updatedJob });
   } catch (error) {
     handleUnknownError(error, res);
   }

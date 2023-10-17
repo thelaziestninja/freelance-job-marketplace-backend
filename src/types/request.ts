@@ -9,8 +9,8 @@ interface IRequestUser {
   userId: string;
 }
 
-export type Request<ReqBody> = core.Request<
-  core.ParamsDictionary,
+export type Request<Params = {}, ReqBody = {}> = core.Request<
+  Params,
   any,
   ReqBody
 > & {
