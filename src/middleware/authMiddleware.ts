@@ -14,7 +14,7 @@ export const authenticateJWT = (
 ) => {
   try {
     const authHeader = req.headers.authorization;
-
+    console.log(req.headers);
     if (authHeader) {
       const token = authHeader.split(" ")[1]; // Bearer <token>
       isTokenBlacklisted(token).then((isBlacklisted) => {

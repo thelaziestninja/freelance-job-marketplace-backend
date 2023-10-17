@@ -2,17 +2,13 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { loginUser, registerUser } from "../services/user";
 import { BaseResponse, LoginInput, UserInput } from "../types";
-import { AppError, ValidationError, handleError } from "../utils/errorHandler";
+import {
+  AppError,
+  handleError,
+  handleUnknownError,
+  isValidationError,
+} from "../utils/errorHandler";
 import { addTokenToBlacklist } from "../utils/tokenBlackList";
-
-const isValidationError = (error: any): error is ValidationError => {
-  return error && error.name === "ValidationError";
-};
-
-const handleUnknownError = (error: any, res: Response<BaseResponse>) => {
-  const e = error as Error;
-  handleError(new AppError(e.message || "Unknown error", 500, 500), res);
-};
 
 export const registerHandler = async (
   req: Request<UserInput>,

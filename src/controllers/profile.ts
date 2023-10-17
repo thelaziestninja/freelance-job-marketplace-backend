@@ -18,6 +18,7 @@ export const createProfileHandler = async (
       .status(201)
       .json({ message: "Profile created successfully", profile: newProfile });
   } catch (error: any) {
+    console.log("error", error);
     res.status(500).json({ error: error.message });
   }
 };

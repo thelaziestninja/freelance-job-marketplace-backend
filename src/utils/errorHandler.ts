@@ -1,3 +1,25 @@
+import { BaseResponse, Response } from "../types";
+
+const handleError = (error: AppError, res: any): void => {
+  console.error(`Error (${error.errorCode ?? "unknown"}): ${error.message}`);
+  if (res) {
+    res.status(error.statusCode ?? 500).json({ error: error.message });
+  } else {
+    console.error(`Error (${error.errorCode ?? "unknown"}): ${error.message}`);
+  }
+};
+
+const isValidationError = (error: any): error is ValidationError => {
+  console.error(`Error (${error.errorCode ?? "unknown"}): ${error.message}`);
+  return error && error.name === "ValidationError";
+};
+
+const handleUnknownError = (error: any, res: Response<BaseResponse>) => {
+  const e = error as Error;
+  handleError(new AppError(e.message || "Unknown error", 500, 500), res);
+  console.error(`Error (${error.errorCode ?? "unknown"}): ${error.message}`);
+};
+
 class AppError extends Error {
   public readonly errorCode: number;
   public readonly statusCode: number;
@@ -16,13 +38,10 @@ class ValidationError extends Error {
     this.name = "ValidationError";
   }
 }
-
-const handleError = (error: AppError, res: any): void => {
-  if (res) {
-    res.status(error.statusCode ?? 500).json({ error: error.message });
-  } else {
-    console.error(`Error (${error.errorCode ?? "unknown"}): ${error.message}`);
-  }
+export {
+  AppError,
+  ValidationError,
+  handleError,
+  isValidationError,
+  handleUnknownError,
 };
-
-export { AppError, ValidationError, handleError };
