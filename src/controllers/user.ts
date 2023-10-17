@@ -3,9 +3,15 @@ import { Request, Response } from "express";
 import { loginUser, registerUser } from "../services/user";
 import { BaseResponse, LoginInput, UserInput } from "../types";
 import { AppError, ValidationError, handleError } from "../utils/errorHandler";
+import { tokenBlacklist } from "../utils/tokenBlackList";
 
 const isValidationError = (error: any): error is ValidationError => {
   return error && error.name === "ValidationError";
+};
+
+const handleUnknownError = (error: any, res: Response<BaseResponse>) => {
+  const e = error as Error;
+  handleError(new AppError(e.message || "Unknown error", 500, 500), res);
 };
 
 export const registerHandler = async (
@@ -22,9 +28,7 @@ export const registerHandler = async (
       // Now TypeScript knows error is a ValidationError within this block
       handleError(new AppError(error.message, 400, 400), res);
     } else {
-      // Fallback for unknown error type
-      const e = error as Error;
-      handleError(new AppError(e.message || "Unknown error", 500, 500), res);
+      handleUnknownError(error, res);
     }
   }
 };
@@ -55,18 +59,18 @@ export const loginHandler = async (
   }
 };
 
-// export const logoutHandler = async (
-//   req: Request,
-//   res: Response<BaseResponse>
-// ): Promise<void> => {
-//   try {
-//     const authHeader = req.headers.authorization;
-//     if (authHeader) {
-//       const token = authHeader.split(" ")[1]; // Bearer <token>
-//       tokenBlacklist.add(token); // Add the token to the blacklist
-//     }
-//     res.status(200).json({ message: "Logout successful" });
-//   } catch (error: any) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+export const logoutHandler = async (
+  req: Request,
+  res: Response<BaseResponse>
+): Promise<void> => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      const token = authHeader.split(" ")[1]; // Bearer <token>
+      tokenBlacklist.add(token); // Add the token to the blacklist
+    }
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    handleUnknownError(error, res);
+  }
+};

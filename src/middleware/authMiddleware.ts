@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { AppError, handleError } from "../utils/errorHandler";
 import { Request, Response, NextFunction } from "express";
+import { tokenBlacklist } from "../utils/tokenBlackList";
 
 function isError(error: unknown): error is Error {
   return error instanceof Error;
@@ -16,6 +17,10 @@ export const authenticateJWT = (
 
     if (authHeader) {
       const token = authHeader.split(" ")[1]; // Bearer <token>
+
+      if (tokenBlacklist.has(token)) {
+        throw new AppError("Token has been invalidated", 401, 1002);
+      }
 
       jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
         if (err) {
@@ -41,7 +46,6 @@ export const authenticateJWT = (
 };
 
 /* In the above code:
-
 A type guard isError is defined to check if the error object is an instance of Error.
 In your catch block, isError is used to check the type of the error object.
 If the error is an instance of Error, a new AppError is created using the message from the caught error.
