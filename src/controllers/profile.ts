@@ -6,7 +6,12 @@ import {
 } from "../utils/errorHandler";
 import { Response } from "express";
 import { Request } from "../types";
-import { createProfile } from "../services/profile";
+import {
+  createProfile,
+  getAllProfiles,
+  getProfileByUserId,
+  updateProfileByUserId,
+} from "../services/profile";
 import { BaseResponse, ProfileInput } from "../types";
 
 export const createProfileHandler = async (
@@ -31,5 +36,64 @@ export const createProfileHandler = async (
       // All other errors are handled here
       handleUnknownError(error, res);
     }
+  }
+};
+
+export const getProfileHandler = async (
+  req: Request<{}>,
+  res: Response<BaseResponse>
+): Promise<void> => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      handleError(new AppError("Unauthorized", 401, 401), res);
+      return;
+    }
+    const profile = await getProfileByUserId(userId);
+    if (!profile) {
+      handleError(new AppError("Profile not found", 404, 404), res);
+      return;
+    }
+    res.status(200).json({ profile });
+  } catch (error) {
+    handleUnknownError(error, res);
+  }
+};
+
+export const getAllProfilesHandler = async (
+  req: Request<{}>,
+  res: Response<BaseResponse>
+): Promise<void> => {
+  try {
+    const userType = req.query.userType as string;
+    const profiles = await getAllProfiles(userType);
+    res.status(200).json({ profiles });
+  } catch (error) {
+    handleUnknownError(error, res);
+  }
+};
+
+export const updateProfileHandler = async (
+  req: Request<{}>,
+  res: Response<BaseResponse>
+): Promise<void> => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      handleError(new AppError("Unauthorized", 401, 401), res);
+      return;
+    }
+
+    const data: ProfileInput = req.body;
+    const updatedProfile = await updateProfileByUserId(userId, data);
+
+    if (!updatedProfile) {
+      handleError(new AppError("Update failed", 500, 500), res);
+      return;
+    }
+
+    res.status(200).json({ profile: updatedProfile });
+  } catch (error) {
+    handleUnknownError(error, res);
   }
 };

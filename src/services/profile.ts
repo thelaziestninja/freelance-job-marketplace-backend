@@ -1,4 +1,5 @@
 import { ProfileM } from "../models/profile";
+import { UserM } from "../models/user";
 import { ProfileInput } from "../types";
 
 export const createProfile = async (
@@ -19,4 +20,29 @@ export const createProfile = async (
 
   await newProfile.save();
   return newProfile;
+};
+
+export const getProfileByUserId = async (userId: string) => {
+  return ProfileM.findOne({ user: userId });
+};
+
+export const getAllProfiles = async (userType?: string) => {
+  if (userType && (userType === "freelancer" || userType === "client")) {
+    const users = await UserM.find({ user_type: userType });
+    const userIds = users.map((user) => user._id);
+    return ProfileM.find({ user: { $in: userIds } });
+  }
+  return ProfileM.find();
+};
+
+export const updateProfileByUserId = async (
+  userId: string,
+  updatedData: ProfileInput
+) => {
+  const result = ProfileM.findOneAndUpdate({ user: userId }, updatedData, {
+    new: true,
+    runValidators: true,
+  });
+  // console.log("Update Result:", result);
+  return result;
 };

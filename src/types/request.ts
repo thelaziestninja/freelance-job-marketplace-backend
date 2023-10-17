@@ -22,6 +22,7 @@ export interface BaseResponse {
   token?: string;
   user?: IUser;
   profile?: IProfile;
+  profiles?: IProfile[];
 }
 
 export type Response<ResBody> = core.Response<ResBody>;

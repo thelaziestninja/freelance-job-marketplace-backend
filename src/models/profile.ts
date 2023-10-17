@@ -19,7 +19,7 @@ const profileSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  language: {
+  languages: {
     type: [String],
   },
 });

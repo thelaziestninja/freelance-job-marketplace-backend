@@ -6,8 +6,8 @@ export interface IProfile {
 }
 
 export interface ProfileInput {
-  skills: string[];
-  description: string;
-  hourly_rate: number;
+  skills?: string[];
+  description?: string;
+  hourly_rate?: number;
   languages?: string[];
 }

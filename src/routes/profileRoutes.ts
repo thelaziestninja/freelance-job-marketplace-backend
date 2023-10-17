@@ -1,5 +1,10 @@
 import express from "express";
-import { createProfileHandler } from "../controllers/profile";
+import {
+  createProfileHandler,
+  getAllProfilesHandler,
+  getProfileHandler,
+  updateProfileHandler,
+} from "../controllers/profile";
 import {
   authenticateJWT,
   ensureFreelancer,
@@ -8,11 +13,12 @@ import {
 const router = express.Router();
 
 router.post(
-  "/profiles",
+  "/profile",
   authenticateJWT,
   ensureFreelancer,
   createProfileHandler
 );
-// router.get("/profiles", authenticateJWT, );
-// router.put("/profiles", authenticateJWT, ensureFreelancer,   );
+router.get("/profiles", authenticateJWT, getAllProfilesHandler);
+router.get("/profile", authenticateJWT, ensureFreelancer, getProfileHandler);
+router.put("/profile", authenticateJWT, ensureFreelancer, updateProfileHandler);
 export default router;
