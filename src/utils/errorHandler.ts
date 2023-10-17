@@ -10,15 +10,22 @@ class AppError extends Error {
   }
 }
 
+class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ValidationError";
+  }
+}
+
 const handleError = (error: AppError, res: any): void => {
   if (res) {
     res.status(error.statusCode ?? 500).json({ error: error.message });
   } else {
-    process.exit(1); // Exit process with failure
+    console.error(`Error (${error.errorCode ?? "unknown"}): ${error.message}`);
   }
 };
 
-export { AppError, handleError };
+export { AppError, ValidationError, handleError };
 
 /* In this updated errorHandler.ts file:
 

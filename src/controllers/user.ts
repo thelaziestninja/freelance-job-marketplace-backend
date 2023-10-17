@@ -2,6 +2,11 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { loginUser, registerUser } from "../services/user";
 import { BaseResponse, LoginInput, UserInput } from "../types";
+import { AppError, ValidationError, handleError } from "../utils/errorHandler";
+
+const isValidationError = (error: any): error is ValidationError => {
+  return error && error.name === "ValidationError";
+};
 
 export const registerHandler = async (
   req: Request<UserInput>,
@@ -12,8 +17,15 @@ export const registerHandler = async (
     res
       .status(201)
       .json({ message: "User registered successfully", user: newUser });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
+  } catch (error) {
+    if (isValidationError(error)) {
+      // Now TypeScript knows error is a ValidationError within this block
+      handleError(new AppError(error.message, 400, 400), res);
+    } else {
+      // Fallback for unknown error type
+      const e = error as Error;
+      handleError(new AppError(e.message || "Unknown error", 500, 500), res);
+    }
   }
 };
 
@@ -33,8 +45,13 @@ export const loginHandler = async (
       { expiresIn: "1d" }
     );
     res.status(200).json({ message: "Login successful", token });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
+  } catch (error) {
+    if (isValidationError(error)) {
+      handleError(new AppError(error.message, 400, 400), res);
+    } else {
+      const e = error as Error;
+      handleError(new AppError(e.message || "Unknown error", 500, 500), res);
+    }
   }
 };
 
