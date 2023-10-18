@@ -30,6 +30,7 @@ export interface BaseResponse {
   jobs?: IJob[];
   application?: IApplication;
   applications?: IApplication[];
+  review?: IReview;
   reviews?: IReview[];
 }
 
