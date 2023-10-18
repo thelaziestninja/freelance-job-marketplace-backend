@@ -1,5 +1,8 @@
 import { Response } from "express";
-import { createApplication } from "../services/application";
+import {
+  createApplication,
+  fetchApplicationsForJob,
+} from "../services/application";
 import {
   Request,
   BaseResponse,
@@ -41,6 +44,35 @@ export const applyForJobHandler = async (
 
     const application = await createApplication(applicationData);
     res.status(201).json({ application });
+  } catch (error) {
+    handleUnknownError(error, res);
+  }
+};
+
+export const getApplicationsForJobHandler = async (
+  req: Request<{ id: string }>,
+  res: Response<BaseResponse>
+): Promise<void> => {
+  try {
+    const clientId = req.user?.userId;
+    if (!clientId) {
+      handleError(new AppError("Unauthorized", 401, 401), res);
+      return;
+    }
+
+    const jobId = req.params.id;
+
+    const applications = await fetchApplicationsForJob(clientId, jobId);
+
+    if (!applications) {
+      handleError(
+        new AppError("No applications found or not authorized", 404, 404),
+        res
+      );
+      return;
+    }
+
+    res.status(200).json({ applications });
   } catch (error) {
     handleUnknownError(error, res);
   }
