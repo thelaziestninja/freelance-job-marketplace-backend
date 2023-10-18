@@ -9,7 +9,7 @@ import userRoutes from "./routes/userRoutes";
 import profileRoutes from "./routes/profileRoutes";
 import jobRoutes from "./routes/jobRoutes";
 import applicationRoutes from "./routes/applicationRoutes";
-// import reviewRoutes from './routes/reviewRoutes';
+import reviewRoutes from "./routes/reviewRoutes";
 
 // Load environment variables
 dotenv.config();
@@ -30,7 +30,7 @@ app.use("/user", userRoutes);
 app.use("/", profileRoutes);
 app.use("/", jobRoutes);
 app.use("/", applicationRoutes);
-// app.use('/api/reviews', reviewRoutes);
+app.use("/", reviewRoutes);
 
 // Global error-handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

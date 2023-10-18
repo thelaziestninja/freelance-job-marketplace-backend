@@ -3,6 +3,7 @@ import { IUser } from "./user";
 import { IProfile } from "./profile";
 import * as core from "express-serve-static-core";
 import { IApplication } from "./application";
+import { IReview } from "./review";
 
 // if separated into multiple services, separate to multiple files and on a more generic location
 
@@ -29,6 +30,7 @@ export interface BaseResponse {
   jobs?: IJob[];
   application?: IApplication;
   applications?: IApplication[];
+  reviews?: IReview[];
 }
 
 export type Response<ResBody> = core.Response<ResBody>;

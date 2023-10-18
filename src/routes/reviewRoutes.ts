@@ -1,15 +1,10 @@
 import express from "express";
-import {
-  authenticateJWT,
-  ensureClient,
-  ensureFreelancer,
-} from "../middleware/authMiddleware";
+import { authenticateJWT, ensureClient } from "../middleware/authMiddleware";
+import { getReviewsHandler } from "../controllers/reviews";
 
 const router = express.Router();
 
-// router.get(
-//   "/job/:id/applications",
-//   authenticateJWT,
+router.get("/profile/:id/reviews", authenticateJWT, getReviewsHandler);
 
 // );
 // router.post(
