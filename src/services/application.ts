@@ -1,8 +1,18 @@
 import { ApplicationM } from "../models/application";
 import { JobM } from "../models/job";
 import { IApplication } from "../types/application";
+import { AppError } from "../utils/errorHandler";
 
 export const createApplication = async (applicationData: IApplication) => {
+  const existingApplication = await ApplicationM.findOne({
+    freelancer_id: applicationData.freelancer_id,
+    job_id: applicationData.job_id,
+  });
+
+  if (existingApplication) {
+    throw new AppError("You've already applied for this job.", 400, 400);
+  }
+
   const application = new ApplicationM(applicationData);
   await application.save();
   return application.toObject();

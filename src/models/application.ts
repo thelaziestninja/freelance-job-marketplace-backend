@@ -22,4 +22,6 @@ const applicationSchema = new mongoose.Schema({
   },
 });
 
+applicationSchema.index({ freelancer_id: 1, job_id: 1 }, { unique: true });
+
 export const ApplicationM = mongoose.model("Application", applicationSchema);
