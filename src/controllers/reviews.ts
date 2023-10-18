@@ -8,9 +8,19 @@ export const getReviewsHandler = async (
 ): Promise<void> => {
   try {
     const freelancerId = req.params.id;
+
+    // This service fetches reviews based on the freelancer's ID
     const reviews = await getReviewsByFreelancerId(freelancerId);
+
+    if (!reviews) {
+      res
+        .status(404)
+        .json({ message: "Reviews not found for this freelancer" });
+      return;
+    }
+
     res.status(200).json({ reviews });
   } catch (error) {
-    handleUnknownError(error, res);
+    res.status(500).json({ error: "An unexpected error occurred" });
   }
 };

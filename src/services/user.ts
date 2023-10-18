@@ -1,10 +1,17 @@
 import bcrypt from "bcryptjs";
 import { UserM } from "../models/user";
+import { AppError } from "../utils/errorHandler";
 import { LoginInput, UserInput } from "../types";
 import { addTokenToBlacklist } from "../utils/tokenBlackList";
-import { AppError } from "../utils/errorHandler";
 
 export const registerUser = async (input: UserInput) => {
+  if (
+    !input.user_type ||
+    (input.user_type !== "client" && input.user_type !== "freelancer")
+  ) {
+    throw new AppError("Valid user type must be provided", 400, 400);
+  }
+
   try {
     const hashed_password = await bcrypt.hash(input.password, 10);
     const newUser = new UserM({

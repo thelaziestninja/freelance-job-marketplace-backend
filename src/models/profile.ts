@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ProfileDocument } from "../types";
 
 const profileSchema = new mongoose.Schema({
   user: {
@@ -24,6 +25,9 @@ const profileSchema = new mongoose.Schema({
   },
 });
 
-export const ProfileM = mongoose.model("Profile", profileSchema);
+export const ProfileM = mongoose.model<ProfileDocument>(
+  "Profile",
+  profileSchema
+);
 /* I am not adding types to this model as there  aren't any instance methods I need to define
  */
