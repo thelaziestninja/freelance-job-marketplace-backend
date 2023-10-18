@@ -12,7 +12,6 @@ import {
   handleError,
   handleUnknownError,
 } from "../utils/errorHandler";
-import mongoose from "mongoose";
 
 export const getAllJobsHandler = async (
   req: Request<{}>,

@@ -8,7 +8,7 @@ import connectDB from "./config/dbConfig";
 import userRoutes from "./routes/userRoutes";
 import profileRoutes from "./routes/profileRoutes";
 import jobRoutes from "./routes/jobRoutes";
-// import applicationRoutes from './routes/applicationRoutes';
+import applicationRoutes from "./routes/applicationRoutes";
 // import reviewRoutes from './routes/reviewRoutes';
 
 // Load environment variables
@@ -29,7 +29,7 @@ app.use(helmet()); // Adds some security best practices
 app.use("/user", userRoutes);
 app.use("/", profileRoutes);
 app.use("/", jobRoutes);
-// app.use('/api/applications', applicationRoutes);
+app.use("/", applicationRoutes);
 // app.use('/api/reviews', reviewRoutes);
 
 // Global error-handling middleware
