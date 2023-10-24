@@ -35,7 +35,7 @@ export const authenticateJWT = (
         });
       });
     } else {
-      next(new AppError("Unauthorized", 401, 1000));
+      next(new AppError("Unauthorized", 401, 401));
     }
   } catch (error) {
     // console.error("Error:", error);
