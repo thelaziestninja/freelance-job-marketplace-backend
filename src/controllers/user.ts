@@ -7,7 +7,13 @@ import {
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { blacklistToken, loginUser, registerUser } from "../services/user";
-import { BaseResponse, LoginInput, UserInput } from "../types";
+import {
+  BaseResponse,
+  IUser,
+  LoginInput,
+  UserInput,
+  UserReturn,
+} from "../types";
 
 export const registerHandler = async (
   req: Request<UserInput>,
@@ -43,7 +49,11 @@ export const loginHandler = async (
       process.env.JWT_SECRET as string,
       { expiresIn: "1d" }
     );
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      user,
+    });
   } catch (error) {
     if (isValidationError(error)) {
       handleError(new AppError(error.message, 400, 400), res);

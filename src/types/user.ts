@@ -1,5 +1,15 @@
+import { Types } from "mongoose";
 //an interface is a way to define a contract for a class without implementing any behavior.
 export interface IUser {
+  _id: Types.ObjectId;
+  username: string;
+  hashed_password: string;
+  email: string;
+  user_type: UserType;
+}
+
+export interface UserReturn {
+  _id: Types.ObjectId;
   username: string;
   hashed_password: string;
   email: string;

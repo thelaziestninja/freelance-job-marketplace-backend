@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { UserM } from "../models/user";
 import { AppError } from "../utils/errorHandler";
-import { LoginInput, UserInput } from "../types";
+import { LoginInput, UserInput, UserReturn } from "../types";
 import { addTokenToBlacklist } from "../utils/tokenBlackList";
 
 export const registerUser = async (input: UserInput) => {
@@ -29,7 +29,7 @@ export const registerUser = async (input: UserInput) => {
   }
 };
 
-export const loginUser = async (input: LoginInput) => {
+export const loginUser = async (input: LoginInput): Promise<UserReturn> => {
   try {
     const user = await UserM.findOne({ username: input.username });
     if (!user) {
@@ -42,7 +42,12 @@ export const loginUser = async (input: LoginInput) => {
     if (!isPasswordValid) {
       throw new Error("Invalid password");
     }
-    return user;
+    return {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      user_type: user.user_type,
+    } as UserReturn;
   } catch (e) {
     if (e instanceof Error) {
       throw new AppError(e.message, 500, 500);
