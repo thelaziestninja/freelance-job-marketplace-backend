@@ -17,12 +17,14 @@ export type Request<Params = {}, ReqBody = {}> = core.Request<
   ReqBody
 > & {
   user?: IRequestUser;
+  name?: IRequestUser;
 };
 
 export interface BaseResponse {
   message?: string;
   error?: string;
   token?: string;
+  name?: string;
   user?: IUser;
   profile?: IProfile;
   profiles?: IProfile[];

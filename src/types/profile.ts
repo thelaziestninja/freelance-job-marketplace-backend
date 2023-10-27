@@ -3,6 +3,7 @@ import { IUser } from "./user";
 
 export interface IProfile {
   user: IUser & mongoose.Document;
+  name: string;
   skills: string[];
   description: string;
   hourly_rate: number;
@@ -12,6 +13,7 @@ export interface IProfile {
 export interface ProfileDocument extends mongoose.Document, IProfile {}
 
 export interface ProfileInput {
+  name?: string;
   skills?: string[];
   description?: string;
   hourly_rate?: number;

@@ -15,13 +15,17 @@ import { Response } from "express";
 import { Request, BaseResponse, ProfileInput } from "../types";
 
 export const createProfileHandler = async (
-  req: Request<ProfileInput>,
+  req: Request<{}, ProfileInput>,
   res: Response<BaseResponse>
 ): Promise<void> => {
   try {
-    const userId = req.user?.userId; // Assuming `req.user` contains the authenticated user's info
+    const userId = req.user?.userId;
     if (!userId) {
       handleError(new AppError("Unauthorized", 401, 401), res);
+      return;
+    }
+    if (!req.body.name) {
+      handleError(new AppError("Name is required", 400, 400), res);
       return;
     }
     const newProfile = await createProfile(userId, req.body);
@@ -73,8 +77,16 @@ export const getAllProfilesHandler = async (
   }
 };
 
+interface UpdateProfileRequestBody {
+  name?: string;
+  skills?: string[];
+  description?: string;
+  hourly_rate?: number;
+  languages?: string[];
+}
+
 export const updateProfileHandler = async (
-  req: Request<{}>,
+  req: Request<{}, ProfileInput>,
   res: Response<BaseResponse>
 ): Promise<void> => {
   try {
@@ -83,7 +95,10 @@ export const updateProfileHandler = async (
       handleError(new AppError("Unauthorized", 401, 401), res);
       return;
     }
-
+    if (!req.body.name) {
+      handleError(new AppError("Name is required", 400, 400), res);
+      return;
+    }
     const data: ProfileInput = req.body;
     const updatedProfile = await updateProfileByUserId(userId, data);
 

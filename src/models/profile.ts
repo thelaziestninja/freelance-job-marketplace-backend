@@ -8,6 +8,10 @@ const profileSchema = new mongoose.Schema({
     required: true,
     unique: true, // Ensure each user can only have one profile
   },
+  name: {
+    type: String,
+    required: true,
+  },
   skills: {
     type: [String],
     required: true,
