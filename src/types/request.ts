@@ -17,7 +17,6 @@ export type Request<Params = {}, ReqBody = {}> = core.Request<
   ReqBody
 > & {
   user?: IRequestUser;
-  name?: IRequestUser;
 };
 
 export interface BaseResponse {
@@ -25,6 +24,7 @@ export interface BaseResponse {
   error?: string;
   token?: string;
   name?: string;
+  img_url?: string;
   user?: IUser;
   profile?: IProfile;
   profiles?: IProfile[];

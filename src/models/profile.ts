@@ -12,6 +12,10 @@ const profileSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  imgUrl: {
+    type: String,
+    required: false,
+  },
   skills: {
     type: [String],
     required: true,

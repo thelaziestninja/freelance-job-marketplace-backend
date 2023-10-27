@@ -16,7 +16,6 @@ export const createProfile = async (
   const newProfile = new ProfileM({
     ...profileInput,
     user: userId, // Assuming the profile schema has a `user` field to store the associated user's ID
-    name: profileInput.name,
   });
 
   await newProfile.save();
