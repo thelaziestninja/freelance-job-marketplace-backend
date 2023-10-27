@@ -7,25 +7,25 @@ import { Request, Response, BaseResponse, ReviewInput } from "../types";
 import { createReview, getReviewsByFreelancerId } from "../services/review";
 
 export const getReviewsHandler = async (
-  req: Request<{ id: string }>,
+  req: Request<{ profileId: string }>,
   res: Response<BaseResponse>
 ): Promise<void> => {
   try {
-    const freelancerId = req.params.id;
+    const profileId = req.params.profileId;
 
-    // This service fetches reviews based on the freelancer's ID
-    const reviews = await getReviewsByFreelancerId(freelancerId);
+    const reviews = await getReviewsByFreelancerId(profileId);
 
-    if (!reviews) {
+    if (reviews === null) {
       res
         .status(404)
-        .json({ message: "Reviews not found for this freelancer" });
-      return;
+        .json({ message: "Freelancer not found or not a freelancer" });
+    } else if (reviews.length === 0) {
+      res.status(200).json({ message: "No reviews found for this freelancer" });
+    } else {
+      res.status(200).json({ reviews });
     }
-
-    res.status(200).json({ reviews });
   } catch (error) {
-    res.status(500).json({ error: "An unexpected error occurred" });
+    handleUnknownError(error, res);
   }
 };
 

@@ -1,23 +1,30 @@
+import mongoose from "mongoose";
 import { ApplicationM } from "../models/application";
 import { ProfileM } from "../models/profile";
 import { ReviewM } from "../models/review";
 import { ReviewInput } from "../types";
 import { AppError } from "../utils/errorHandler";
 
-export const getReviewsByFreelancerId = async (freelancerId: string) => {
-  const freelancerProfile = await ProfileM.findOne({ user: freelancerId });
-
-  // Using type assertion
-  const profileType = (freelancerProfile as any).type;
-
-  // Check if the user has a profile and is a freelancer
-  if (!freelancerProfile || profileType !== "freelancer") {
-    throw new Error(
-      "User is either not a freelancer or doesn't have a profile."
-    );
+export const getReviewsByFreelancerId = async (profileId: string) => {
+  if (!mongoose.Types.ObjectId.isValid(profileId)) {
+    console.log("Invalid ObjectId format");
+    return null;
   }
 
-  return ReviewM.find({ freelancer_id: freelancerId });
+  const freelancerProfile = await ProfileM.findById(profileId).populate("user");
+
+  if (!freelancerProfile) {
+    console.log("Freelancer profile not found");
+    return null;
+  }
+
+  // Check if the linked user is a freelancer
+  if (freelancerProfile.user.user_type !== "freelancer") {
+    console.log("User is not a freelancer");
+    return null;
+  }
+
+  return ReviewM.find({ freelancer_id: freelancerProfile.user._id });
 };
 
 export const createReview = async (

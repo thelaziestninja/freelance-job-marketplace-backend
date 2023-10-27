@@ -4,7 +4,7 @@ import { getReviewsHandler, postReviewHandler } from "../controllers/reviews";
 
 const router = express.Router();
 
-router.get("/profile/:id/reviews", authenticateJWT, getReviewsHandler);
+router.get("/profile/:profileId/reviews", authenticateJWT, getReviewsHandler);
 
 router.post(
   "/profile/:id/review",

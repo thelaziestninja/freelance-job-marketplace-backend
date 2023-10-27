@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import { IUser } from "./user";
 
 export interface IProfile {
-  user: mongoose.Types.ObjectId;
+  user: IUser & mongoose.Document;
   skills: string[];
   description: string;
   hourly_rate: number;
