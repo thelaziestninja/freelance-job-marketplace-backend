@@ -46,3 +46,8 @@ export const updateProfileByUserId = async (
   // console.log("Update Result:", result);
   return result;
 };
+
+export const doesProfileExistForUser = async (userId: string) => {
+  const profile = await ProfileM.findOne({ user: userId });
+  return !!profile;
+};

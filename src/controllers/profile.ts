@@ -7,6 +7,7 @@ import {
 
 import {
   createProfile,
+  doesProfileExistForUser,
   getAllProfiles,
   getProfileByUserId,
   updateProfileByUserId,
@@ -110,5 +111,24 @@ export const updateProfileHandler = async (
     res.status(200).json({ profile: updatedProfile });
   } catch (error) {
     handleUnknownError(error, res);
+  }
+};
+
+export const doesTheProfileExistHandler = async (
+  req: Request,
+  res: Response<BaseResponse>
+): Promise<void> => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const exists = await doesProfileExistForUser(userId);
+    res.status(200).json({ exists });
+  } catch (error) {
+    console.error("Error checking profile existence:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };

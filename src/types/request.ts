@@ -21,6 +21,7 @@ export type Request<Params = {}, ReqBody = {}> = core.Request<
 
 export interface BaseResponse {
   message?: string;
+  exists?: boolean;
   error?: string;
   token?: string;
   name?: string;
