@@ -22,12 +22,23 @@ export const fetchApplicationsForJob = async (
   clientId: string,
   jobId: string
 ) => {
-  // Ensure the job belongs to the client
   const job = await JobM.findById(jobId);
-  if (!job || job.client_id.toString() !== clientId) {
+  if (!job) {
+    console.error("Job not found for job ID:", jobId);
     return null;
   }
 
-  // Fetch applications for the job
-  return ApplicationM.find({ job_id: jobId });
+  if (job.client_id.toString() !== clientId) {
+    console.error(
+      "Job does not belong to the client. Job's client ID:",
+      job.client_id,
+      "Requesting client ID:",
+      clientId
+    );
+    return null;
+  }
+
+  const applications = await ApplicationM.find({ job_id: jobId });
+  console.log("Applications fetched for job ID:", jobId, ":", applications);
+  return applications;
 };

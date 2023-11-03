@@ -55,16 +55,30 @@ export const getApplicationsForJobHandler = async (
 ): Promise<void> => {
   try {
     const clientId = req.user?.userId;
+
     if (!clientId) {
+      console.error("Unauthorized: No client ID found in request");
       handleError(new AppError("Unauthorized", 401, 401), res);
       return;
     }
 
     const jobId = req.params.id;
+    console.log(
+      "Fetching applications for job ID:",
+      jobId,
+      "and client ID:",
+      clientId
+    );
 
     const applications = await fetchApplicationsForJob(clientId, jobId);
 
     if (!applications) {
+      console.error(
+        "No applications found or not authorized for job ID:",
+        jobId,
+        "and client ID:",
+        clientId
+      );
       handleError(
         new AppError("No applications found or not authorized", 404, 404),
         res
@@ -72,8 +86,10 @@ export const getApplicationsForJobHandler = async (
       return;
     }
 
+    console.log("Applications fetched:", applications);
     res.status(200).json({ applications });
   } catch (error) {
+    console.error("Error in getApplicationsForJobHandler:", error);
     handleUnknownError(error, res);
   }
 };
