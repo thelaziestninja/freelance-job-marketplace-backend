@@ -49,13 +49,11 @@ export const authenticateJWT = (
     }
   }
 };
-
 export const ensureFreelancer = (
-  req: Request,
+  req: Request & { user?: { userType: string } },
   res: Response,
   next: NextFunction
 ) => {
-  // @ts-expect-error ts-migrate(2339) FIXME: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs>'.
   if (req.user?.userType !== "freelancer") {
     return res
       .status(403)
@@ -65,11 +63,10 @@ export const ensureFreelancer = (
 };
 
 export const ensureClient = (
-  req: Request,
+  req: Request & { user?: { userType: string } },
   res: Response,
   next: NextFunction
 ) => {
-  // @ts-expect-error ts-migrate(2339) FIXME: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs>'.
   if (req.user?.userType !== "client") {
     return res.status(403).json({ error: "Access forbidden for non-clients" });
   }
