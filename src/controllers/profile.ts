@@ -56,7 +56,9 @@ export const getProfileHandler = async (
     }
     const profile = await getProfileByUserId(userId);
     if (!profile) {
-      handleError(new AppError("Profile not found", 404, 404), res);
+      res
+        .status(200)
+        .json({ profile: undefined, message: "Profile does not exist." });
       return;
     }
     res.status(200).json({ profile });
