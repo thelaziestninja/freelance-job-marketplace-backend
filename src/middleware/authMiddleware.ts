@@ -21,9 +21,9 @@ export const authenticateJWT = (
         jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
           if (err) {
             if (err instanceof TokenExpiredError) {
-              next(new AppError("Unauthorized", 401, 401));
-            } else {
               next(new AppError("Forbidden", 403, 403));
+            } else {
+              next(new AppError("Unauthorized", 401, 401));
             }
             return;
           }

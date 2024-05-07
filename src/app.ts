@@ -22,7 +22,12 @@ app.use(express.json());
 // Middleware
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-app.use(cors()); // Enable CORS for all routes
+app.use(
+  cors({
+    origin: "http://localhost:5173", // or true to reflect the request origin, as long as it's not '*'
+    credentials: true, // allowing the frontend to send cookies or other credentials
+  })
+);
 app.use(helmet()); // Adds some security best practices
 
 // Use routes
