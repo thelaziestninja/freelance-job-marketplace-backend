@@ -23,7 +23,7 @@ export const authenticateJWT = (
             if (err instanceof TokenExpiredError) {
               next(new AppError("Forbidden", 403, 403));
             } else {
-              next(new AppError("Forbidden", 403, 403));
+              next(new AppError("Unauthorized", 401, 401));
             }
             return;
           }

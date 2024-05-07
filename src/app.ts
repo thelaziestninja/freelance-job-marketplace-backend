@@ -31,7 +31,7 @@ app.use(
 app.use(helmet()); // Adds some security best practices
 
 // Use routes
-app.use("/", userRoutes);
+app.use("/user", userRoutes);
 app.use("/", profileRoutes);
 app.use("/", jobRoutes);
 app.use("/", applicationRoutes);
