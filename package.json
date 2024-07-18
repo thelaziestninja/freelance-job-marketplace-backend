@@ -11,7 +11,8 @@
   },
   "scripts": {
     "dev": "nodemon",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.4",
